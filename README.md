@@ -370,7 +370,7 @@ Notes: Some students have gotten hung up on this question (thinking too hard) in
 
 ## Hand-in Instructions ##
 
-Please place the following files in your handin:
+Handin will be performed via [Canvas](http://canvas.stanford.edu). Please place the following files in your handin:
 
 * Your writeup, in a file called writeup.pdf
 * Your implementation of main.cpp in Program 2, in a file called `prob2.cpp`
