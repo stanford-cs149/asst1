@@ -44,7 +44,7 @@ If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google 
 
 2. The assignment starter code is available on [github]. Please clone the Assignment 1 starter code using:
 
-    `git clone git@github.com:stanford-cs149/asst1.git`
+    `git clone https://github.com/stanford-cs149/asst1.git`
 
 ## Program 1: Parallel Fractal Generation Using Threads (25 points) ##
 
