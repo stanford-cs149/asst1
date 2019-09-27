@@ -34,9 +34,9 @@ To get started:
 
 From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html), or directly download it via `wget` from the commandline.
 
-    wget https://sourceforge.net/projects/ispcmirror/files/v1.9.2/ispc-v1.9.2-linux.tar.gz
+    wget http://sourceforge.net/projects/ispcmirror/files/v1.12.0/ispc-v1.12.0-linux.tar.gz/download
 
-Untar the downloaded file: `tar -xvf ispc-v1.9.2-linux.tar.gz`
+Untar the downloaded file: `tar -xvf ispc-v1.12.2-linux.tar.gz`
 
 Add the ISPC directory to your system path.  For example, if you copied ispc to the directory `~SUID/MYCOURSEWORK/ISPC`, in bash you'd update your path variable with:
 
