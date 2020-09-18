@@ -1,9 +1,9 @@
 CXX=g++ -m64
-CXXFLAGS=-I../common -Iobjs/ -O3 -Wall
+CXXFLAGS=-I../common -Iobjs/ -O3 -Wall -fPIC
 ISPC=ispc
 # note: requires AVX2
 # disabling AVX2 FMA since it causes a difference in output compared to reference on Mandelbrot 
-ISPCFLAGS=-O3 --target=avx2-i32x8 --arch=x86-64 --opt=disable-fma
+ISPCFLAGS=-O3 --target=avx2-i32x8 --arch=x86-64 --opt=disable-fma --pic
 
 APP_NAME=mandelbrot_ispc
 OBJDIR=objs

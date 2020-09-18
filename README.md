@@ -1,6 +1,6 @@
 # Assignment 1: Performance Analysis on a Quad-Core CPU #
 
-**Due Fri Oct 4, 11:59pm**
+**Due Fri Sep 25, 11:59pm**
 
 **100 points total + 6 points extra credit**
 
@@ -32,17 +32,21 @@ To get started:
 
 1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
 
-From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  (From `myth`, we recommend you use `wget` to directly download the binary from the downloads page.)
+From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2020 Week 1, the `wget` line below works:
 
-Untar the downloaded file: `tar -xvf ispc-v1.12.2-linux.tar.gz`  (You may need to change the ispc version number in the filename accordingly.)
+    wget https://github.com/ispc/ispc/releases/download/v1.14.1/ispc-v1.14.1-linux.tar.gz
 
-Add the ISPC directory to your system path.  For example, if you copied ispc to the directory `~SUID/MYCOURSEWORK/ISPC`, in bash you'd update your path variable with:
+Untar the downloaded file: `tar -xvf ispc-v1.14.1-linux.tar.gz`
 
-    export PATH=$PATH:~SUID/MYCOURSEWORK/ISPC/bin
+Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.14.1-linux`, in bash you'd update your path variable with:
+
+    export PATH=$PATH:${HOME}/Downloads/ispc-v1.14.1-linux/bin
+
+The above line can be added to your `.bashrc` file for permanence.
 
 If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google search will teach you how. 
 
-2. The assignment starter code is available on [github]. Please clone the Assignment 1 starter code using:
+2. The assignment starter code is available on <https://github.com/stanford-cs149/asst1>. Please clone the Assignment 1 starter code using:
 
     `git clone https://github.com/stanford-cs149/asst1.git`
 
@@ -301,7 +305,8 @@ different CPU cores).
   and (launch/sync) mechanisms, but the implications of these differences
   are more subtle. Here's a thought experiment to guide your answer: what
   happens when you launch 10,000 ISPC tasks? What happens when you launch
-  10,000 threads?
+  10,000 threads? (For this thought experiment, please discuss in the general case
+  - i.e. don't tie your discussion to this given mandelbrot program.)
 
 _The smart-thinking student's question_: Hey wait! Why are there two different
 mechanisms (`foreach` and `launch`) for expressing independent, parallelizable
@@ -334,9 +339,9 @@ Note: This problem is a review to double-check your understanding, as it covers 
   is the speedup due to SIMD parallelization? What is the speedup due to 
   multi-core parallelization?
 2.  Modify the contents of the array values to improve the relative speedup 
-  of the ISPC implementations. Describe a very-good-case input that __maximizes speedup over the sequential version of the code__ and report the resulting speedup achieved (for both the with- and without-tasks ISPC implementations). Does your modification improve SIMD speedup?
+  of the ISPC implementations. Construct a specifc input that __maximizes speedup over the sequential version of the code__ and report the resulting speedup achieved (for both the with- and without-tasks ISPC implementations). Does your modification improve SIMD speedup?
   Does it improve multi-core speedup (i.e., the benefit of moving from ISPC without-tasks to ISPC with tasks)? Please explain why.
-3.  Construct a very-bad-case input for `sqrt` that __minimizes speedup for ISPC with no tasks__. Describe this input, describe why you chose it, and report the resulting relative performance of the ISPC implementations. What is the reason for the loss in efficiency? 
+3.  Construct a specific input for `sqrt` that __minimizes speedup for ISPC (without-tasks) over the sequential version of the code__. Describe this input, describe why you chose it, and report the resulting relative performance of the ISPC implementations. What is the reason for the loss in efficiency? 
     __(keep in mind we are using the `--target=avx2` option for ISPC, which generates 8-wide SIMD instructions)__. 
 4.  _Extra Credit: (up to 2 points)_ Write your own version of the `sqrt` 
  function manually using AVX2 intrinsics. To get credit your 
