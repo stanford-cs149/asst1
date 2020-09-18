@@ -373,9 +373,10 @@ Notes: Some students have gotten hung up on this question (thinking too hard) in
 
 ## Hand-in Instructions ##
 
-Handin will be performed via [Canvas](http://canvas.stanford.edu). Please place the following files in your handin:
+Handin will be performed via [Canvas](http://canvas.stanford.edu). Only one handin per group is required.  Please place the following files in your handin:
 
 * Your writeup, in a file called writeup.pdf
+    * In your writeup, please make sure both group members' names and SUNet id's are in the document.  (if you are a group of two) 
 * Your implementation of main.cpp in Program 2, in a file called `prob2.cpp`
 
 If you would like to hand in additional code, for example, because you attempted an extra credit, you are free to include that as well. Please tell the CAs to look for your extra credit. When handed in, all code must be compilable and runnable out of the box on the myth machines!
