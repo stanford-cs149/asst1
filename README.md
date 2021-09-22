@@ -1,6 +1,6 @@
 # Assignment 1: Performance Analysis on a Quad-Core CPU #
 
-**Due Fri Sep 25, 11:59pm**
+**Due Fri Oct 1, 11:59pm**
 
 **100 points total + 6 points extra credit**
 
@@ -34,13 +34,13 @@ To get started:
 
 From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2020 Week 1, the `wget` line below works:
 
-    wget https://github.com/ispc/ispc/releases/download/v1.14.1/ispc-v1.14.1-linux.tar.gz
+    wget https://github.com/ispc/ispc/releases/download/v1.16.1/ispc-v1.16.1-linux.tar.gz
 
-Untar the downloaded file: `tar -xvf ispc-v1.14.1-linux.tar.gz`
+Untar the downloaded file: `tar -xvf ispc-v1.16.1-linux.tar.gz`
 
 Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.14.1-linux`, in bash you'd update your path variable with:
 
-    export PATH=$PATH:${HOME}/Downloads/ispc-v1.14.1-linux/bin
+    export PATH=$PATH:${HOME}/Downloads/ispc-v1.16.1-linux/bin
 
 The above line can be added to your `.bashrc` file for permanence.
 
