@@ -26,7 +26,7 @@ values. For the curious, a complete specification for this CPU can be found at
 <https://ark.intel.com/products/97129/Intel-Core-i7-7700K-Processor-8M-Cache-up-to-4-50-GHz->.
 
 Note: For grading purposes, we expect you to report on the performance of code run on the Stanford myth machines, however
-for kicks, you may also want to run the programs in this assignment on your own machine. (You will first need to install the Intel SPMD Program Compiler (ISPC) available here: <http://ispc.github.com/>). Feel free to include your findings from running code on other machines in your report as well, just be very clear what machine you were running on. 
+for kicks, you may also want to run the programs in this assignment on your own machine. (You will first need to install the Intel SPMD Program Compiler (ISPC) available here: <http://ispc.github.io/>). Feel free to include your findings from running code on other machines in your report as well, just be very clear what machine you were running on. 
 
 To get started:
 
@@ -249,7 +249,7 @@ specifies only the set of work to be performed.
 
 Before proceeding, you are encouraged to familiarize yourself with ISPC
 language constructs by reading through the ISPC walkthrough available at
-<http://ispc.github.com/example.html>. The example program in the walkthrough
+<http://ispc.github.io/example.html>. The example program in the walkthrough
 is almost exactly the same as Program 3's implementation of `mandelbrot_ispc()`
 in `mandelbrot.ispc`. In the assignment code, we have changed the bounds of
 the foreach loop to yield a more straightforward implementation.
@@ -296,7 +296,7 @@ different CPU cores).
   `mandelbrot_ispc --tasks` by changing the number of tasks the code
   creates. By only changing code in the function
   `mandelbrot_ispc_withtasks()`, you should be able to achieve
-  performance that exceeds the sequential version of the code by over 40 times!
+  performance that exceeds the sequential version of the code by over 32 times!
   How did you determine how many tasks to create? Why does the
   number you chose work best?
 3.  _Extra Credit: (2 points)_ What are differences between the thread
@@ -384,7 +384,7 @@ If you would like to hand in additional code, for example, because you attempted
 ## Resources and Notes ##
 
 -  Extensive ISPC documentation and examples can be found at
-  <http://ispc.github.com/>
+  <http://ispc.github.io/>
 -  Zooming into different locations of the mandelbrot image can be quite
   fascinating
 -  Intel provides a lot of supporting material about AVX2 vector instructions at
