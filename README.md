@@ -372,6 +372,10 @@ elements used. `saxpy` is a *trivially parallelizable computation* and features 
 
 Notes: Some students have gotten hung up on this question (thinking too hard) in the past. We expect a simple answer, but the results from running this problem might trigger more questions in your head.  Feel free to come talk to the staff.
 
+## For the curious ##
+
+For those interested and with access, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple M1 laptop.  The staff is curious what you will fine.  What speedups are you observing from SIMD execution?  Those without access to a fancy M1 Macbook could use the ARM-based servers that are available on AWS.  
+
 ## Hand-in Instructions ##
 
 Handin will be performed via [Canvas](http://canvas.stanford.edu). Only one handin per group is required.  Please place the following files in your handin:
