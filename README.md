@@ -270,7 +270,7 @@ the foreach loop to yield a more straightforward implementation.
   Program 1, where speedup was achieved by running threads on multiple
   cores.
 
-If you look into detailed technical material about the CPUs in the myth machines, who find there are a complicated set of rules about how many scalar and vector instructions can be run per clock.  For the purposes of this assignment, you can assume that there are about as many 8-wide vector execution units as there are scalar execution units for floating point math.   
+If you look into detailed technical material about the CPUs in the myth machines, you will find there are a complicated set of rules about how many scalar and vector instructions can be run per clock.  For the purposes of this assignment, you can assume that there are about as many 8-wide vector execution units as there are scalar execution units for floating point math.   
 
 ### Program 3, Part 2: ISPC Tasks (10 of 20 points) ###
 
@@ -374,7 +374,7 @@ Notes: Some students have gotten hung up on this question (thinking too hard) in
 
 ## For the curious ##
 
-For those interested and with access, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple M1 laptop.  The staff is curious what you will fine.  What speedups are you observing from SIMD execution?  Those without access to a fancy M1 Macbook could use the ARM-based servers that are available on AWS.  
+For those interested and with access, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple M1 laptop.  The staff is curious about what you will find.  What speedups are you observing from SIMD execution?  Those without access to a fancy M1 Macbook could use the ARM-based servers that are available on AWS.  
 
 ## Hand-in Instructions ##
 
