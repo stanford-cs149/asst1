@@ -347,7 +347,7 @@ Note: This problem is a review to double-check your understanding, as it covers 
 4.  _Extra Credit: (up to 2 points)_ Write your own version of the `sqrt` 
  function manually using AVX2 intrinsics. To get credit your 
     implementation should be nearly as fast (or faster) than the binary 
-    produced using ISPC. You may find the [Intel Intrinsics Guide](http://software.intel.com/en-us/articles/intel-intrinsics-guide) 
+    produced using ISPC. You may find the [Intel Intrinsics Guide](https://software.intel.com/sites/landingpage/IntrinsicsGuide/) 
     very helpful.
  
 ## Program 5: BLAS `saxpy` (15 points) ##
@@ -394,4 +394,4 @@ If you would like to hand in additional code, for example, because you attempted
   fascinating
 -  Intel provides a lot of supporting material about AVX2 vector instructions at
   <http://software.intel.com/en-us/avx/>.  
--  The [Intel Intrinsics Guide](http://software.intel.com/en-us/articles/intel-intrinsics-guide) is very useful.
+-  The [Intel Intrinsics Guide](https://software.intel.com/sites/landingpage/IntrinsicsGuide/) is very useful.
