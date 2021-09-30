@@ -378,7 +378,7 @@ For those interested and with access, try changing the compilation target to ARM
 
 ## Hand-in Instructions ##
 
-Handin will be performed via [Canvas](http://canvas.stanford.edu). Only one handin per group is required.  Please place the following files in your handin:
+Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required.  Please place the following files in your handin:
 
 * Your writeup, in a file called writeup.pdf
     * In your writeup, please make sure both group members' names and SUNet id's are in the document.  (if you are a group of two) 
