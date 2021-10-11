@@ -18,6 +18,14 @@ toGFLOPS(int ops, float sec) {
     return static_cast<float>(ops) / 1e9 / sec;
 }
 
+static void verifyResult(int N, float* result, float* gold) {
+    for (int i=0; i<N; i++) {
+        if (result[i] != gold[i]) {
+            printf("Error: [%d] Got %f expected %f\n", i, result[i], gold[i]);
+        }
+    }
+}
+
 using namespace ispc;
 
 
@@ -31,14 +39,18 @@ int main() {
 
     float* arrayX = new float[N];
     float* arrayY = new float[N];
-    float* result = new float[N];
+    float* resultSerial = new float[N];
+    float* resultISPC = new float[N];
+    float* resultTasks = new float[N];
 
     // initialize array values
     for (unsigned int i=0; i<N; i++)
     {
         arrayX[i] = i;
         arrayY[i] = i;
-        result[i] = 0.f;
+        resultSerial[i] = 0.f;
+        resultISPC[i] = 0.f;
+        resultTasks[i] = 0.f;
     }
 
     //
@@ -48,7 +60,7 @@ int main() {
     double minSerial = 1e30;
     for (int i = 0; i < 3; ++i) {
         double startTime =CycleTimer::currentSeconds();
-        saxpySerial(N, scale, arrayX, arrayY, result);
+        saxpySerial(N, scale, arrayX, arrayY, resultSerial);
         double endTime = CycleTimer::currentSeconds();
         minSerial = std::min(minSerial, endTime - startTime);
     }
@@ -58,29 +70,23 @@ int main() {
     //       toBW(TOTAL_BYTES, minSerial),
     //       toGFLOPS(TOTAL_FLOPS, minSerial));
 
-    // Clear out the buffer
-    for (unsigned int i = 0; i < N; ++i)
-        result[i] = 0.f;
-
     //
     // Run the ISPC (single core) implementation
     //
     double minISPC = 1e30;
     for (int i = 0; i < 3; ++i) {
         double startTime = CycleTimer::currentSeconds();
-        saxpy_ispc(N, scale, arrayX, arrayY, result);
+        saxpy_ispc(N, scale, arrayX, arrayY, resultISPC);
         double endTime = CycleTimer::currentSeconds();
         minISPC = std::min(minISPC, endTime - startTime);
     }
+
+    verifyResult(N, resultISPC, resultSerial);
 
     printf("[saxpy ispc]:\t\t[%.3f] ms\t[%.3f] GB/s\t[%.3f] GFLOPS\n",
            minISPC * 1000,
            toBW(TOTAL_BYTES, minISPC),
            toGFLOPS(TOTAL_FLOPS, minISPC));
-
-    // Clear out the buffer
-    for (unsigned int i = 0; i < N; ++i)
-        result[i] = 0.f;
 
     //
     // Run the ISPC (multi-core) implementation
@@ -88,10 +94,12 @@ int main() {
     double minTaskISPC = 1e30;
     for (int i = 0; i < 3; ++i) {
         double startTime = CycleTimer::currentSeconds();
-        saxpy_ispc_withtasks(N, scale, arrayX, arrayY, result);
+        saxpy_ispc_withtasks(N, scale, arrayX, arrayY, resultTasks);
         double endTime = CycleTimer::currentSeconds();
         minTaskISPC = std::min(minTaskISPC, endTime - startTime);
     }
+
+    verifyResult(N, resultTasks, resultSerial);
 
     printf("[saxpy task ispc]:\t[%.3f] ms\t[%.3f] GB/s\t[%.3f] GFLOPS\n",
            minTaskISPC * 1000,
@@ -104,7 +112,9 @@ int main() {
 
     delete[] arrayX;
     delete[] arrayY;
-    delete[] result;
+    delete[] resultSerial;
+    delete[] resultISPC;
+    delete[] resultTasks;
 
     return 0;
 }
