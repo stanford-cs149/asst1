@@ -368,42 +368,44 @@ elements used. `saxpy` is a *trivially parallelizable computation* and features 
 2. __Extra Credit:__ (1 point) Note that the total memory bandwidth consumed computation in `main.cpp` is `TOTAL_BYTES = 4 * N * sizeof(float);`.  Even though `saxpy` loads one element from X, one element from Y, and writes one element to `result` the multiplier by 4 is correct.  Why is this the case? (Hint, think about how CPU caches work.)
 3. __Extra Credit:__ (points handled on a case-by-case basis) Improve the performance of `saxpy`.
   We're looking for a significant speedup here, not just a few percentage 
-  points. If successful, describe how you did it and what a best-possible implementation on these systems might achieve.
+  points. If successful, describe how you did it and what a best-possible implementation on these systems might achieve. Also, if successful, come tell the staff, we'll be interested. ;-)
 
-Notes: Some students have gotten hung up on this question (thinking too hard) in the past. We expect a simple answer, but the results from running this problem might trigger more questions in your head.  Feel free to come talk to the staff.
+Notes: Some students have gotten hung up on this question (thinking too hard) in the past. We expect a simple answer, but the results from running this problem might trigger more questions in your head.  Feel encouraged to come talk to the staff.
 
-## Program 6: Parallel `K-Means` (20 points) ##
+## Program 6: Making `K-Means` Faster (20 points) ##
 
-Program 6 is an parallel program that clusters 1 million data points using the K-Means algorithm ([Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering), [CS 221 Handout](https://stanford.edu/~cpiech/cs221/handouts/kmeans.html)). If you're unfamiliar with the algorithm, don't worry! The specifics aren't important at this point, but at a high level, given K staring points (centroids), the algorithm iteratively updates the centroids until some convergence criteria is met. The results can be seen in the below images depicting the state of the algorithm at the beginning and end of the program, where red stars are cluster centroids and the data point colors correspond to cluster assignments.
+Program 6 clusters one million data points using the K-Means data clustering algorithm ([Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering), [CS 221 Handout](https://stanford.edu/~cpiech/cs221/handouts/kmeans.html)). If you're unfamiliar with the algorithm, don't worry! The specifics aren't important to the exercise, but at a high level, given K starting points (cluster centroids), the algorithm iteratively updates the centroids until a convergence criteria is met. The results can be seen in the below images depicting the state of the algorithm at the beginning and end of the program, where red stars are cluster centroids and the data point colors correspond to cluster assignments.
 
 ![K-Means starting and ending point](./handout-images/kmeans.jpg "Starting and ending point of the K-Means algorithm applied to 2 dimensional data.")
 
-The current implementation is parallelized using `std::thread`, however in it's current state it's not quite as fast as we would like it to be. This is where you come in! Your job will be to figure out **where** the implementation needs to be improved and **how** to improve it.
+In the starter code you have been given a correct implementation of the K-means algorithm, however in its current state it is not quite as fast as we would like it to be. This is where you come in! Your job will be to figure out **where** the implementation needs to be improved and **how** to improve it. The key skill you will practice in this problem is __isolating a performance hotspot__.  We aren't going to tell you where to look in the code.  You need to figure it out. Your first thought should be... where is the code spending the most time and you should insert timing code into the source to make measurements.  Based on these measurements, you should focus in on the part of the code that is taking a significant portion of the runtime, and then understand it more carefully to determine if there is a way to speed it up.
 
 **What you need to do:**
 
-1.  Download the dataset from [this link](https://web.stanford.edu/~ardenma/cs149/data.dat), put the data under `prog6_kmeans/data.dat`, and then compile and run `kmeans`. The program will report the total runtime of the algorithm on the data.
-2.  Run `pip install -r requirements.txt` to download the necessary plotting packages. Next, try running `python3 plot.py` which will generate the files "start.png" and "end.png" from the logs ("start.log" and "end.log") generated from running `kmeans`. These files will be in the current directory and should look similar to the above images. You might notice that not all points are assigned to the "closest" centroid, and this is because we project the data from 100 dimensions down to 2 dimensions using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) to produce these visualizations. As long as the clustering looks "reasonable" (use the images produced by the starter code in step 2 as a reference) and most points appear to be assigned to the clostest centroid, you should be good!
-3.  Utilize the timing function in `common/CycleTimer.h` to determine where in the code there are performance bottlenecks. Where is most of the time being spent and what is causing the performance issue?
-4.  Based on the findings from step 2, improve the implementation. We are looking for a speedup of around 20% or more (i.e $\frac{newRuntime}{oldRuntime} <= 0.80$). Please explain how you arrived at your solution, as well as what your final solution is and the associated speedup. The writeup of this process should resemble the form "I measured ... so I tried ... resulting in a speedup/slowdown of ..." and include justification for why you tried what you did.
+1. Use the command `ln -s /afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat` to create a symbolic link to the dataset in your current directory (make sure you're in the `prog6_kmeans` directory). This is a large file (~800MB), so this is the preferred way to access it. However, if you'd like a local copy, you can run this command on your personal machine `scp [Your SUNetID]@myth[51-66].stanford.edu:/afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat`. Once you have the data, compile and run `kmeans` (it may take longer than usual for the program to load the data on your first try). The program will report the total runtime of the algorithm on the data.
+2.  Run `pip install -r requirements.txt` to download the necessary plotting packages. Next, try running `python3 plot.py` which will generate the files "start.png" and "end.png" from the logs ("start.log" and "end.log") generated from running `kmeans`. These files will be in the current directory and should look similar to the above images. __Warning: You might notice that not all points are assigned to the "closest" centroid. This is okay.__ (For those that want to understand why: We project 100-dimensional datapoints down to 2-D using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) to produce these visualizations. Therefore, while the 100-D datapoint is near the appropriate centroid in high dimensional space, the projects of the datapoint and the centroid may not be close to each other in 2-D.). As long as the clustering looks "reasonable" (use the images produced by the starter code in step 2 as a reference) and most points appear to be assigned to the clostest centroid, the code remains correct.
+3.  Utilize the timing function in `common/CycleTimer.h` to determine where in the code there are performance bottlenecks. You will need to call `CycleTimer::currentSeconds()`, which returns the current time (in seconds) as a floating point number. Where is most of the time being spent in the code?
+4.  Based on your findings from the previous step, improve the implementation. We are looking for a speedup of about 1.9x or more (i.e $\frac{oldRuntime}{newRuntime} >= 1.9 $). Please explain how you arrived at your solution, as well as what your final solution is and the associated speedup. The writeup of this process should describe a sequence of steps. We expect something of the form "I measured ... which let me to believe X. So to improve things I tried ... resulting in a speedup/slowdown of ...".
   
 Constraints:
 - You may only modify code in `kmeansThread.cpp`. You are not allowed to modify the `stoppingConditionMet` function and you cannot change the interface to `kMeansThread`, but anything is fair game (e.g. you can add new members to the `WorkerArgs` struct, rewrite functions, allocate new arrays, etc.). However...
 - **Make sure you do not change the functionality of the implementation! If the algorithm doesn't converge or the result from running `python3 plot.py` does not look like what's produced by the starter code, something is wrong!** For example, you cannot simply remove the main "while" loop or change the semantics of the `dist` function, since this would yield incorrect results.
-
+- __Important:__ you may only parallelize __one__ of the following functions: `dist`, `computeAssignments`, `computeCentroids`, `computeCost`.
+  
 Tips / Notes: 
-- This problem should not require a ton of coding. Our solution modified/added around 20-25 lines of code.
-- What are the relative sizes of K, M, and N?
+- This problem should not require a significant amount of coding. Our solution modified/added around 20-25 lines of code.
+- Once you've used timers to isolate hotspots, to improve the code make sure you understand the relative sizes of K, M, and N.
 - Try to prioritize code improvements with the potential for high returns and think about the different axes of parallelism available in the problem and how you may take advantage of them.
+- For an example of how to write parallel code using `std::thread`, see `prog1_mandelbrot_threads/mandelbrotThread.cpp`.
 - **The objective of this program is to give you more practice with learning how to profile and debug performance oriented programs. Even if you don't hit the performance target, if you demonstrate good/thoughtful debugging skills in the writeup you'll still get most of the points.**
 
-## For the curious ##
+## For the Curious ##
 
-For those interested and with access, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple M1 laptop.  The staff is curious about what you will find.  What speedups are you observing from SIMD execution?  Those without access to a fancy M1 Macbook could use the ARM-based servers that are available on AWS.  
+For those with access to newer hardware, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple ARM-based laptop.  The staff is curious about what you will find.  What speedups are you observing from SIMD execution?  Those without access to a modern Macbook could use the ARM-based servers that are available on a cloud provider like AWS.  
 
 ## Hand-in Instructions ##
 
-Handin will be performed via [Canvas](http://canvas.stanford.edu). Only one handin per group is required.  Please place the following files in your handin:
+Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required.  Please place the following files in your handin:
 
 * Your writeup, in a file called writeup.pdf
     * In your writeup, please make sure both group members' names and SUNet id's are in the document.  (if you are a group of two) 

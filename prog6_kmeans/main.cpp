@@ -127,7 +127,7 @@ int main() {
   //           &K, &epsilon);
   */
 
-  printf("Running parallel K-means with: M=%d, N=%d, K=%d, epsilon=%f\n", M, N,
+  printf("Running K-means with: M=%d, N=%d, K=%d, epsilon=%f\n", M, N,
          K, epsilon);
 
   // Log the starting state of the algorithm
