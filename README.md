@@ -2,7 +2,7 @@
 
 **Due Fri Oct 7, 11:59pm**
 
-**120 points total + 6 points extra credit**
+**100 points total + 6 points extra credit**
 
 ## Overview ##
 
@@ -50,7 +50,7 @@ If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google 
 
     `git clone https://github.com/stanford-cs149/asst1.git`
 
-## Program 1: Parallel Fractal Generation Using Threads (25 points) ##
+## Program 1: Parallel Fractal Generation Using Threads (20 points) ##
 
 Build and run the code in the `prog1_mandelbrot_threads/` directory of
 the code base. (Type `make` to build, and `./mandelbrot` to run it.)
@@ -104,7 +104,7 @@ You will not need to make use of any other std::thread API calls in this assignm
   and report the final 8-thread speedup obtained. 
 5. Now run your improved code with 16 threads. Is performance noticably greater than when running with eight threads? Why or why not? 
   
-## Program 2: Vectorizing Code Using SIMD Intrinsics (25 points) ##
+## Program 2: Vectorizing Code Using SIMD Intrinsics (20 points) ##
 
 Take a look at the function `clampedExpSerial` in `prog2_vecintrin/main.cpp` of the
 Assignment 1 code base.  The `clampedExp()` function raises `values[i]` to the power given by `exponents[i]` for all elements of the input array and clamps the resulting values at 9.999999.  In program 2, your job is to vectorize this piece of code so it can be run on a machine with SIMD vector instructions.
@@ -350,7 +350,7 @@ Note: This problem is a review to double-check your understanding, as it covers 
     produced using ISPC. You may find the [Intel Intrinsics Guide](https://software.intel.com/sites/landingpage/IntrinsicsGuide/) 
     very helpful.
  
-## Program 5: BLAS `saxpy` (15 points) ##
+## Program 5: BLAS `saxpy` (10 points) ##
 
 Program 5 is an implementation of the saxpy routine in the BLAS (Basic Linear
 Algebra Subproblems) library that is widely used (and heavily optimized) on 
@@ -372,7 +372,7 @@ elements used. `saxpy` is a *trivially parallelizable computation* and features 
 
 Notes: Some students have gotten hung up on this question (thinking too hard) in the past. We expect a simple answer, but the results from running this problem might trigger more questions in your head.  Feel encouraged to come talk to the staff.
 
-## Program 6: Making `K-Means` Faster (20 points) ##
+## Program 6: Making `K-Means` Faster (15 points) ##
 
 Program 6 clusters one million data points using the K-Means data clustering algorithm ([Wikipedia](https://en.wikipedia.org/wiki/K-means_clustering), [CS 221 Handout](https://stanford.edu/~cpiech/cs221/handouts/kmeans.html)). If you're unfamiliar with the algorithm, don't worry! The specifics aren't important to the exercise, but at a high level, given K starting points (cluster centroids), the algorithm iteratively updates the centroids until a convergence criteria is met. The results can be seen in the below images depicting the state of the algorithm at the beginning and end of the program, where red stars are cluster centroids and the data point colors correspond to cluster assignments.
 
@@ -385,7 +385,7 @@ In the starter code you have been given a correct implementation of the K-means 
 1. Use the command `ln -s /afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat` to create a symbolic link to the dataset in your current directory (make sure you're in the `prog6_kmeans` directory). This is a large file (~800MB), so this is the preferred way to access it. However, if you'd like a local copy, you can run this command on your personal machine `scp [Your SUNetID]@myth[51-66].stanford.edu:/afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat`. Once you have the data, compile and run `kmeans` (it may take longer than usual for the program to load the data on your first try). The program will report the total runtime of the algorithm on the data.
 2.  Run `pip install -r requirements.txt` to download the necessary plotting packages. Next, try running `python3 plot.py` which will generate the files "start.png" and "end.png" from the logs ("start.log" and "end.log") generated from running `kmeans`. These files will be in the current directory and should look similar to the above images. __Warning: You might notice that not all points are assigned to the "closest" centroid. This is okay.__ (For those that want to understand why: We project 100-dimensional datapoints down to 2-D using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) to produce these visualizations. Therefore, while the 100-D datapoint is near the appropriate centroid in high dimensional space, the projects of the datapoint and the centroid may not be close to each other in 2-D.). As long as the clustering looks "reasonable" (use the images produced by the starter code in step 2 as a reference) and most points appear to be assigned to the clostest centroid, the code remains correct.
 3.  Utilize the timing function in `common/CycleTimer.h` to determine where in the code there are performance bottlenecks. You will need to call `CycleTimer::currentSeconds()`, which returns the current time (in seconds) as a floating point number. Where is most of the time being spent in the code?
-4.  Based on your findings from the previous step, improve the implementation. We are looking for a speedup of about 2x or more (i.e $\frac{oldRuntime}{newRuntime} >= 2 $). Please explain how you arrived at your solution, as well as what your final solution is and the associated speedup. The writeup of this process should describe a sequence of steps. We expect something of the form "I measured ... which let me to believe X. So to improve things I tried ... resulting in a speedup/slowdown of ...".
+4.  Based on your findings from the previous step, improve the implementation. We are looking for a speedup of about 2.1x or more (i.e $\frac{oldRuntime}{newRuntime} >= 2.1$). Please explain how you arrived at your solution, as well as what your final solution is and the associated speedup. The writeup of this process should describe a sequence of steps. We expect something of the form "I measured ... which let me to believe X. So to improve things I tried ... resulting in a speedup/slowdown of ...".
   
 Constraints:
 - You may only modify code in `kmeansThread.cpp`. You are not allowed to modify the `stoppingConditionMet` function and you cannot change the interface to `kMeansThread`, but anything is fair game (e.g. you can add new members to the `WorkerArgs` struct, rewrite functions, allocate new arrays, etc.). However...
