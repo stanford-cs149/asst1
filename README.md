@@ -161,7 +161,7 @@ execution resources as efficiently as possible.
 
 You will make a simple fix to Program 3 which is written in a combination of
 C++ and ISPC (the error causes a performance problem, not a correctness one).
-With the correct fix, you should observe performance that is over forty times
+With the correct fix, you should observe performance that is over 32 times
 greater than that of the original sequential Mandelbrot implementation from
 `mandelbrotSerial()`.
 
