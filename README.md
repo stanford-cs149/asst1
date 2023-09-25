@@ -1,6 +1,6 @@
 # Assignment 1: Performance Analysis on a Quad-Core CPU #
 
-**Due Fri Oct 7, 11:59pm**
+**Due Fri Oct 6, 11:59pm**
 
 **100 points total + 6 points extra credit**
 
@@ -32,15 +32,15 @@ To get started:
 
 1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
 
-From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2022 Week 1, the `wget` line below works:
+From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2023 Week 1, the `wget` line below works:
 
-    wget https://github.com/ispc/ispc/releases/download/v1.18.0/ispc-v1.18.0-linux.tar.gz
+    wget https://github.com/ispc/ispc/releases/download/v1.21.0/ispc-v1.21.0-linux.tar.gz
 
-Untar the downloaded file: `tar -xvf ispc-v1.18.0-linux.tar.gz`
+Untar the downloaded file: `tar -xvf ispc-v1.21.0-linux.tar.gz`
 
-Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.18.0-linux`, in bash you'd update your path variable with:
+Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.21.0-linux`, in bash you'd update your path variable with:
 
-    export PATH=$PATH:${HOME}/Downloads/ispc-v1.18.0-linux/bin
+    export PATH=$PATH:${HOME}/Downloads/ispc-v1.21.0-linux/bin
 
 The above line can be added to your `.bashrc` file for permanence.
 
