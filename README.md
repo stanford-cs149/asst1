@@ -400,7 +400,7 @@ Tips / Notes:
 
 ## For the Curious ##
 
-For those with access to newer hardware, try changing the compilation target to ARM, and produce a report of performance of the various programs on a new Apple ARM-based laptop.  The staff is curious about what you will find.  What speedups are you observing from SIMD execution?  Those without access to a modern Macbook could use the ARM-based servers that are available on a cloud provider like AWS.  
+For those with access to a new Apple ARM-based laptop, try changing the ISPC compilation target to `neon-i32x8` and the compilation arch to `aarch64` in Programs 3, 4, and 5. The other programs only use GCC and should produce the correct target. Produce a report of performance of the various programs on a new Apple ARM-based laptop. The staff is curious about what you will find.  What speedups are you observing from SIMD execution? Those without access to a modern Macbook could try to use ARM-based servers that are available on a cloud provider like AWS, although it has not been tested by the staff.
 
 ## Hand-in Instructions ##
 
