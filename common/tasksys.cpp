@@ -157,7 +157,7 @@ struct TaskInfo {
     int taskCount0() const { return taskCount3d[0]; }
     int taskCount1() const { return taskCount3d[1]; }
     int taskCount2() const { return taskCount3d[2]; }
-    TaskInfo() = default;
+    TaskInfo() {}
 };
 
 // ispc expects these functions to have C linkage / not be mangled
