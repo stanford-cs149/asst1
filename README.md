@@ -398,18 +398,22 @@ Tips / Notes:
 - Try to prioritize code improvements with the potential for high returns and think about the different axes of parallelism available in the problem and how you may take advantage of them.
 - **The objective of this program is to give you more practice with learning how to profile and debug performance oriented programs. Even if you don't hit the performance target, if you demonstrate good/thoughtful debugging skills in the writeup you'll still get most of the points.**
 
-## For the Curious ##
+## What About ARM-Based Macs? ##
 
 For those with access to a new Apple ARM-based laptop, try changing the ISPC compilation target to `neon-i32x8` and the compilation arch to `aarch64` in Programs 3, 4, and 5. The other programs only use GCC and should produce the correct target. Produce a report of performance of the various programs on a new Apple ARM-based laptop. The staff is curious about what you will find.  What speedups are you observing from SIMD execution? Those without access to a modern Macbook could try to use ARM-based servers that are available on a cloud provider like AWS, although it has not been tested by the staff.
+
+## For the Curious (highly recommended) ##
+
+Want to know about ISPC and how it was created? One of the two creators of ISPC, Matt Pharr, wrote an __amazing blog post__ on the history of its development called [The story of ispc](https://pharr.org/matt/blog/2018/04/30/ispc-all).  It really touches on many issues of parallel system design -- in particular the value of limited scope vs general programming languages.  IMHO it's a must read for CS149 students!
 
 ## Hand-in Instructions ##
 
 Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required.  Please place the following files in your handin:
 
-* Your writeup, in a file called writeup.pdf
-    * In your writeup, please make sure both group members' names and SUNet id's are in the document.  (if you are a group of two) 
-* Your implementation of main.cpp in Program 2, in a file called `prob2.cpp`
-* Your implementation of kmeansThread.cpp in Program 6, in a file called `prob6.cpp`
+* Your writeup, in a file called `writeup.pdf`:
+    * Please make sure both group members' names and SUNet id's are in the document. (if you are a group of two) 
+* Your implementation of `main.cpp` in Program 2, in a file called `prob2.cpp`
+* Your implementation of `kmeansThread.cpp` in Program 6, in a file called `prob6.cpp`
 
 If you would like to hand in additional code, for example, because you attempted an extra credit, you are free to include that as well. Please tell the CAs to look for your extra credit. When handed in, all code must be compilable and runnable out of the box on the myth machines!
 
