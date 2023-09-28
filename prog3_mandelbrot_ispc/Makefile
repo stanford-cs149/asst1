@@ -1,5 +1,5 @@
 CXX=g++ -m64
-CXXFLAGS=-I../common -Iobjs/ -O3 -Wall -fPIC
+CXXFLAGS=-I../common -Iobjs/ -O3 -Wall -fPIC -ffp-contract=off
 ISPC=ispc
 # note: requires AVX2
 # disabling AVX2 FMA since it causes a difference in output compared to reference on Mandelbrot 
