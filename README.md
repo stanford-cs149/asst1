@@ -55,9 +55,12 @@ If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google 
 Build and run the code in the `prog1_mandelbrot_threads/` directory of
 the code base. (Type `make` to build, and `./mandelbrot` to run it.)
 This program produces the image file `mandelbrot-serial.ppm`, which is a visualization of a famous set of
-complex numbers called the Mandelbrot set. (Most platforms have a .ppm
-view. For example, to view the resulting images remotely, use `ssh -Y`
-and the `display` command.) As you can see in the images below, the
+complex numbers called the Mandelbrot set. Most platforms have a .ppm
+view. To view the resulting images remotely, first make sure that you have _X server_. No downloads are needed
+for Linux systems. However, for Mac you can use [Xquartz](https://www.xquartz.org/) and 
+for Windows you can use [VcXsrv](https://sourceforge.net/projects/vcxsrv/).
+After you have SSH X-Forwarding support, make sure you `ssh -Y` onto a myth machine and
+you can then view the images using the `display` command. As you can see in the images below, the
 result is a familiar and beautiful fractal.  Each pixel in the image
 corresponds to a value in the complex plane, and the brightness of
 each pixel is proportional to the computational cost of determining
