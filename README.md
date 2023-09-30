@@ -208,7 +208,7 @@ following ISPC code:
      
     sum(TOTAL_VALUES, a, b, c);
  
-    // Upon return from sumArrays, result of a + b is stored in c.
+    // Upon return from sum, result of a + b is stored in c.
 
 The corresponding ISPC code:
 
