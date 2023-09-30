@@ -18,8 +18,9 @@ programming, but a lot of analysis!
 
 ## Environment Setup ##
 
-__You will need to run code on the new myth machines for this assignment.__
-(Hostnames for these machines are `myth[51-66].stanford.edu`)
+__You will need to run code on the new myth machines for this assignment__
+(Hostnames for these machines are `myth[51-66].stanford.edu`). If for some reason you do not have a home directory on the myth machines, submit a HelpSU ticket [here](https://stanford.service-now.com/it_services?id=sc_cat_item&sys_id=cab169801bd918d0685d4377cc4bcbe0).
+
 These machines contain four-core 4.2 GHz Intel Core i7 processors (although dynamic frequency scaling can take them to 4.5 GHz when the chip decides it is useful and possible to do so). Each core in the processor supports two hardware threads (Intel calls this "Hyper-Threading") and the cores can execute AVX2 vector instructions which describe
 simultaneous execution of the same eight-wide operation on multiple single-precision data
 values. For the curious, a complete specification for this CPU can be found at 
