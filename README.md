@@ -72,7 +72,7 @@ definition of the Mandelbrot set at
 <http://en.wikipedia.org/wiki/Mandelbrot_set>.
 
 
-![Mandelbrot Set](handout-images/mandelbrot_viz.jpg "A visualization of the Mandelbrot set. The cost of computing each pixel is proportional to its brightness. When running programs 1 and 3, you can use the command line option `--view 2` to set output to be view 2.")
+![Mandelbrot Set](handout-images/mandelbrot_viz.jpg "A visualization of two views of the Mandelbrot set. The cost of computing each pixel is proportional to its brightness. When running programs 1 and 3, you can use the command line option `--view 2` to set output to be view 2.")
 
 Your job is to parallelize the computation of the images using 
 [std::thread](https://en.cppreference.com/w/cpp/thread/thread). Starter
@@ -335,7 +335,7 @@ accuracy of the initial guess.
 
 Note: This problem is a review to double-check your understanding, as it covers similar concepts as programs 2 and 3.
 
-![Convergence of sqrt](handout-images/sqrt_graph.jpg "Convergence of sqrt on the range 0-3 with starting guess 1.0.")
+![Convergence of sqrt](handout-images/sqrt_graph.jpg "Convergence of sqrt on the range 0-3 with starting guess 1.0. Note that iterations until convergence is immediate for an input value of 1 and increases as the input value goes toward 0 or 3 (highest value is for input of 3).")
 
 **What you need to do:**
 
