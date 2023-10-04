@@ -412,14 +412,17 @@ Want to know about ISPC and how it was created? One of the two creators of ISPC,
 
 ## Hand-in Instructions ##
 
-Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required.  Please place the following files in your handin:
+Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required. However, please make sure that you add your partner's name to the gradescope submission. There are two places you will need to turn in the files on Gradescope: `Assignment 1 (Write-Up)` and `Assignment 1 (Code)`. 
 
-* Your writeup, in a file called `writeup.pdf`:
-    * Please make sure both group members' names and SUNet id's are in the document. (if you are a group of two) 
+Please place the following in `Assignment 1 (Write-Up)`:
+* Your writeup, in a file called `writeup.pdf`. Please make sure both group members' names and SUNet id's are in the document. (if you are a group of two)
+
+Please place the following in `Assignment 1 (Code)`:
 * Your implementation of `main.cpp` in Program 2, in a file called `prob2.cpp`
 * Your implementation of `kmeansThread.cpp` in Program 6, in a file called `prob6.cpp`
+* Any additional code, for example, because you attempted an extra credit
 
-If you would like to hand in additional code, for example, because you attempted an extra credit, you are free to include that as well. Please tell the CAs to look for your extra credit. When handed in, all code must be compilable and runnable out of the box on the myth machines!
+Please tell the CAs to look for your extra credit in your write-up. When handed in, all code must be compilable and runnable out of the box on the myth machines!
 
 ## Resources and Notes ##
 
