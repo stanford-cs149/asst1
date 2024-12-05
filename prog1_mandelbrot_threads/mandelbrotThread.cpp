@@ -38,9 +38,13 @@ void workerThreadStart(WorkerArgs * const args) {
     double startTime = CycleTimer::currentSeconds();
     double minSerial = 1e30;
 
-    int startRow = args->threadId * (args->height / args->numThreads);
-    mandelbrotSerial(args->x0, args->y0, args->x1, args->y1, args->width, args->height, startRow, args->height / args->numThreads, args->maxIterations, args->output);
-
+    int numOfSegments = 120; // can also make it 1200
+    int segmentSize = args->height / numOfSegments;
+    int startRow;
+    for (int i = args->threadId; i < numOfSegments; i += args->numThreads) {
+        startRow = i * segmentSize;
+        mandelbrotSerial(args->x0, args->y0, args->x1, args->y1, args->width, args->height, startRow, segmentSize, args->maxIterations, args->output);
+    }
     double endTime = CycleTimer::currentSeconds();
     minSerial = std::min(minSerial, endTime - startTime);
     printf("[Thread %d finished in ]:\t\t[%.3f] ms\n", args->threadId, minSerial * 1000);
@@ -59,7 +63,7 @@ void mandelbrotThread(
     int width, int height,
     int maxIterations, int output[])
 {
-    static constexpr int MAX_THREADS = 32;
+    static constexpr int MAX_THREADS = 1200;
 
     if (numThreads > MAX_THREADS)
     {
