@@ -72,8 +72,6 @@ If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google 
 | 30      | 10.11x  |             |
 
 
-![[Pasted image 20241205230820.png]]
-
 # Solving the problem of unfair assignment
 
 ```c++
@@ -83,7 +81,7 @@ mandelbrotSerial(args->x0, args->y0, args->x1, args->y1, args->width, args->heig
 ```
 
 You'll notice that some of the areas needs more work than other, for example if you compiled the program with 8 threads:
-
+```
 [Thread 0 finished in ]:                [18.538] ms
 [Thread 7 finished in ]:                [19.243] ms
 [Thread 6 finished in ]:                [104.952] ms
@@ -92,7 +90,7 @@ You'll notice that some of the areas needs more work than other, for example if 
 [Thread 2 finished in ]:                [216.803] ms
 [Thread 3 finished in ]:                [319.558] ms
 [Thread 4 finished in ]:                [320.805] ms
-
+```
 you'll notice that `thread 0` and `thread 7` finished really quickly because the amount of work for these threads are small compared to the other threads especially thread 3, 4.
 
 we can solve this by doing another assignment policy like: 
