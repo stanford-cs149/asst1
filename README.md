@@ -1,9 +1,5 @@
 # Assignment 1: Performance Analysis on a Quad-Core CPU #
 
-**Due Mon Oct 7, 11:59pm**
-
-**100 points total + 6 points extra credit**
-
 ## Overview ##
 
 This assignment is intended to help you develop an understanding of the two primary forms of parallel execution present in a modern multi-core CPU:
@@ -15,41 +11,6 @@ You will also gain experience measuring and reasoning about the
 performance of parallel programs (a challenging, but important, skill you will
 use throughout this class). This assignment involves only a small amount of
 programming, but a lot of analysis!
-
-## Environment Setup ##
-
-__You will need to run code on the new myth machines for this assignment__
-(Hostnames for these machines are `myth[51-66].stanford.edu`). If for some reason you do not have a home directory on the myth machines, submit a HelpSU ticket [here](https://stanford.service-now.com/it_services?id=sc_cat_item&sys_id=cab169801bd918d0685d4377cc4bcbe0).
-
-These machines contain four-core 4.2 GHz Intel Core i7 processors (although dynamic frequency scaling can take them to 4.5 GHz when the chip decides it is useful and possible to do so). Each core in the processor supports two hardware threads (Intel calls this "Hyper-Threading") and the cores can execute AVX2 vector instructions which describe
-simultaneous execution of the same eight-wide operation on multiple single-precision data
-values. For the curious, a complete specification for this CPU can be found at 
-<https://ark.intel.com/products/97129/Intel-Core-i7-7700K-Processor-8M-Cache-up-to-4-50-GHz->. Students that want to dig deeper might enjoy [this writeup](https://en.wikichip.org/wiki/intel/microarchitectures/kaby_lake).
-
-Note: For grading purposes, we expect you to report on the performance of code run on the Stanford myth machines, however
-for kicks, you may also want to run the programs in this assignment on your own machine. (You will first need to install the Intel SPMD Program Compiler (ISPC) available here: <http://ispc.github.io/>). Feel free to include your findings from running code on other machines in your report as well, just be very clear what machine you were running on. 
-
-To get started:
-
-1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
-
-From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2024 Week 1, the `wget` line below works:
-
-    wget https://github.com/ispc/ispc/releases/download/v1.24.0/ispc-v1.24.0-linux.tar.gz
-
-Untar the downloaded file: `tar -xvf ispc-v1.24.0-linux.tar.gz`
-
-Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.24.0-linux`, in bash you'd update your path variable with:
-
-    export PATH=$PATH:${HOME}/Downloads/ispc-v1.24.0-linux/bin
-
-The above line can be added to your `.bashrc` file for permanence.
-
-If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google search will teach you how. 
-
-2. The assignment starter code is available on <https://github.com/stanford-cs149/asst1>. Please clone the Assignment 1 starter code using:
-
-    `git clone https://github.com/stanford-cs149/asst1.git`
 
 ## Program 1: Parallel Fractal Generation Using Threads (20 points) ##
 
