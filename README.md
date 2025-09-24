@@ -1,6 +1,6 @@
 # Assignment 1: Performance Analysis on a Quad-Core CPU #
 
-**Due Mon Oct 7, 11:59pm**
+**Due Fri Oct 3, 11:59pm**
 
 **100 points total + 6 points extra credit**
 
@@ -33,15 +33,15 @@ To get started:
 
 1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
 
-From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2024 Week 1, the `wget` line below works:
+From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2025 Week 1, the `wget` line below works:
 
-    wget https://github.com/ispc/ispc/releases/download/v1.24.0/ispc-v1.24.0-linux.tar.gz
+    wget https://github.com/ispc/ispc/releases/download/v1.28.1/ispc-v1.28.1-linux.tar.gz
 
-Untar the downloaded file: `tar -xvf ispc-v1.24.0-linux.tar.gz`
+Untar the downloaded file: `tar -xvf ispc-v1.28.1-linux.tar.gz`
 
-Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.24.0-linux`, in bash you'd update your path variable with:
+Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.28.1-linux`, in bash you'd update your path variable with:
 
-    export PATH=$PATH:${HOME}/Downloads/ispc-v1.24.0-linux/bin
+    export PATH=$PATH:${HOME}/Downloads/ispc-v1.28.1-linux/bin
 
 The above line can be added to your `.bashrc` file for permanence.
 
@@ -310,8 +310,8 @@ different CPU cores).
   and (launch/sync) mechanisms, but the implications of these differences
   are more subtle. Here's a thought experiment to guide your answer: what
   happens when you launch 10,000 ISPC tasks? What happens when you launch
-  10,000 threads? (For this thought experiment, please discuss in the general case
-  - i.e. don't tie your discussion to this given mandelbrot program.)
+  10,000 threads? (For this thought experiment, please discuss in the general case - 
+  i.e. don't tie your discussion to this given mandelbrot program.)
 
 _The smart-thinking student's question_: Hey wait! Why are there two different
 mechanisms (`foreach` and `launch`) for expressing independent, parallelizable
