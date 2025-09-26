@@ -28,14 +28,14 @@ To get started:
 
 1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
 
-Download the linux binary into a local directory of your choice. You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html). For macOS, we recommend you use `curl` or `wget` (if not found, a quick Google search can provide information on how to get tehse tools locally) to directly download the binary from the downloads page. As of Fall 2025 Week 1, the `wget` line below works:
+Download the linux binary into a local directory of your choice. You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html). For macOS, we recommend you use `curl` or `wget` (if not found, a quick Google search can provide information on how to get these tools locally) to directly download the binary from the downloads page. As of Fall 2025 Week 1, the `wget` line below works:
 
 
     wget https://github.com/ispc/ispc/releases/download/v1.28.1/ispc-v1.28.1-MacOS.tar.gz
 
 Untar the downloaded file: `tar -xvf ispc-v1.28.1-MacOS.tar.gz`
 
-Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.28.1-linux`, in bash you'd update your path variable with:
+Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.28.1-MacOS`, in bash you'd update your path variable with:
 
     export PATH=$PATH:${HOME}/Downloads/ispc-v1.28.1-MacOS/bin
 
