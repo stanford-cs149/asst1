@@ -16,36 +16,31 @@ performance of parallel programs (a challenging, but important, skill you will
 use throughout this class). This assignment involves only a small amount of
 programming, but a lot of analysis!
 
+__Note: Running on Arm is optional and not counted for credit.__
+
 ## Environment Setup ##
 
-__You will need to run code on the new myth machines for this assignment__
-(Hostnames for these machines are `myth[51-66].stanford.edu`). If for some reason you do not have a home directory on the myth machines, submit a HelpSU ticket [here](https://stanford.service-now.com/it_services?id=sc_cat_item&sys_id=cab169801bd918d0685d4377cc4bcbe0).
+__You will need to run code on an Arm based machine, such as an M-series Mac.__
 
-These machines contain four-core 4.2 GHz Intel Core i7 processors (although dynamic frequency scaling can take them to 4.5 GHz when the chip decides it is useful and possible to do so). Each core in the processor supports __two hardware threads__ (Intel calls this "Hyper-Threading") and the cores can execute AVX2 vector instructions which describe
-simultaneous execution of the same __eight-wide SIMD operation__ on a vector of eight single-precision 
-values. For the curious, a complete specification for this CPU can be found at 
-<https://www.intel.com/content/www/us/en/products/sku/97129/intel-core-i77700k-processor-8m-cache-up-to-4-50-ghz/specifications.html>. Students that want to dig deeper might enjoy [this writeup](https://en.wikichip.org/wiki/intel/microarchitectures/kaby_lake).
-
-Note: For grading purposes, we expect you to report on the performance of code run on the Stanford myth machines, however
-for kicks, you may also want to run the programs in this assignment on your own machine. (You will first need to install the Intel SPMD Program Compiler (ISPC) available here: <http://ispc.github.io/>). Feel free to include your findings from running code on other machines in your report as well, just be very clear what machine you were running on. 
+Note: You will first need to install the Intel SPMD Program Compiler (ISPC) available here: <http://ispc.github.io/.>
 
 To get started:
 
 1. ISPC is needed to compile many of the programs used in this assignment. ISPC can be easily installed on the myth machines through the following steps:  
 
-From a myth machine, download the linux binary into a local directory of your choice.  You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html).  From `myth`, we recommend you use `wget` to directly download the binary from the downloads page. As of Fall 2025 Week 1, the `wget` line below works:
+Download the linux binary into a local directory of your choice. You can get ISPC compiler binaries for Linux from the ISPC [downloads page](https://ispc.github.io/downloads.html). For macOS, we recommend you use `curl` or `wget` (if not found, a quick Google search can provide information on how to get these tools locally) to directly download the binary from the downloads page. As of Fall 2025 Week 1, the `wget` line below works:
 
-    wget https://github.com/ispc/ispc/releases/download/v1.28.1/ispc-v1.28.1-linux.tar.gz
 
-Untar the downloaded file: `tar -xvf ispc-v1.28.1-linux.tar.gz`
+    wget https://github.com/ispc/ispc/releases/download/v1.28.1/ispc-v1.28.1-MacOS.tar.gz
 
-Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.28.1-linux`, in bash you'd update your path variable with:
+Untar the downloaded file: `tar -xvf ispc-v1.28.1-MacOS.tar.gz`
 
-    export PATH=$PATH:${HOME}/Downloads/ispc-v1.28.1-linux/bin
+Add the ISPC `bin` directory to your system path.  For example, if untarring the downloaded file produces the directory `~/Downloads/ispc-v1.28.1-MacOS`, in bash you'd update your path variable with:
+
+    export PATH=$PATH:${HOME}/Downloads/ispc-v1.28.1-MacOS/bin
+
 
 The above line can be added to your `.bashrc` file for permanence.
-
-If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google search will teach you how. 
 
 2. The assignment starter code is available on <https://github.com/stanford-cs149/asst1>. Please clone the Assignment 1 starter code using:
 
@@ -56,12 +51,7 @@ If you are using csh, you'll update your `PATH` using `setenv`.  A quick Google 
 Build and run the code in the `prog1_mandelbrot_threads/` directory of
 the code base. (Type `make` to build, and `./mandelbrot` to run it.)
 This program produces the image file `mandelbrot-serial.ppm`, which is a visualization of a famous set of
-complex numbers called the Mandelbrot set. Most platforms have a .ppm
-view. To view the resulting images remotely, first make sure that you have _X server_. No downloads are needed
-for Linux systems. However, for Mac you can use [Xquartz](https://www.xquartz.org/) and 
-for Windows you can use [VcXsrv](https://sourceforge.net/projects/vcxsrv/).
-After you have SSH X-Forwarding support, make sure you `ssh -Y` onto a myth machine and
-you can then view the images using the `display` command. As you can see in the images below, the
+complex numbers called the Mandelbrot set. As you can see in the images below, the
 result is a familiar and beautiful fractal.  Each pixel in the image
 corresponds to a value in the complex plane, and the brightness of
 each pixel is proportional to the computational cost of determining
@@ -92,28 +82,26 @@ You will not need to make use of any other std::thread API calls in this assignm
   thread 0, and the bottom half of the image in thread 1. This type
     of problem decomposition is referred to as _spatial decomposition_ since
   different spatial regions of the image are computed by different processors.
-2.  Extend your code to use 2, 3, 4, 5, 6, 7, and 8 threads, partitioning the image
-  generation work accordingly (threads should get blocks of the image). Note that the processor only has four cores but each
-  core supports two hyper-threads, so it can execute a total of eight threads interleaved on its execution contents.
-  In your write-up, produce a graph of __speedup compared to the reference sequential implementation__ as a function of the number of threads used __FOR VIEW 1__. Is speedup linear in the number of threads used? In your writeup hypothesize why this is (or is not) the case? (you may also wish to produce a graph for VIEW 2 to help you come up with a good answer. Hint: take a careful look at the three-thread datapoint.)
+2.  Extend your code to use 2 to the number of (performance CPU cores on your Mac or) machine threads, partitioning the image
+  generation work accordingly (threads should get blocks of the image). In your writeup hypothesize why this is (or is not) the case? (you may also wish to produce a graph __for VIEW 2__ to help you come up with a good answer. Hint: take a careful look at the three-thread datapoint.)
 3.  To confirm (or disprove) your hypothesis, measure the amount of time
   each thread requires to complete its work by inserting timing code at
   the beginning and end of `workerThreadStart()`. How do your measurements
   explain the speedup graph you previously created?
-4.  Modify the mapping of work to threads to achieve to improve speedup to
-  at __about 7-8x on both views__ of the Mandelbrot set (if you're above 7x that's fine, don't sweat it). You may not use any
+4.  Modify the mapping of work to threads to improve speedup as much as possible on the Mandelbrot set. 
+  You may not use any
   synchronization between threads in your solution. We are expecting you to come up with a single work decomposition policy that will work well for all thread counts---hard coding a solution specific to each configuration is not allowed! (Hint: There is a very simple static
   assignment that will achieve this goal, and no communication/synchronization
   among threads is necessary.). In your writeup, describe your approach to parallelization
-  and report the final 8-thread speedup obtained. 
-5. Now run your improved code with 16 threads. Is performance noticably greater than when running with eight threads? Why or why not? 
+  and report the final 8-thread speedup obtained with the same number of threads as the number of performance CPU cores your machine has. 
+5. Now run your improved code with 2 * (number of performance CPU cores on your) machine threads. Is performance noticably greater than when running with eight threads? Why or why not? 
   
 ## Program 2: Vectorizing Code Using SIMD Intrinsics (20 points) ##
 
 Take a look at the function `clampedExpSerial` in `prog2_vecintrin/main.cpp` of the
 Assignment 1 code base.  The `clampedExp()` function raises `values[i]` to the power given by `exponents[i]` for all elements of the input array and clamps the resulting values at 9.999999.  In program 2, your job is to vectorize this piece of code so it can be run on a machine with SIMD vector instructions.
 
-However, rather than craft an implementation using SSE or AVX2 vector intrinsics that map to real SIMD vector instructions on modern CPUs, to make things a little easier, we're asking you to implement your version using CS149's "fake vector intrinsics" defined in `CS149intrin.h`.   The `CS149intrin.h` library provides you with a set of vector instructions that operate
+However, rather than craft an implementation using SSE or AVX2 vector intrinsics or Neon vector intrinsics that map to real SIMD vector instructions on modern CPUs, to make things a little easier, we're asking you to implement your version using CS149's "fake vector intrinsics" defined in `CS149intrin.h`.   The `CS149intrin.h` library provides you with a set of vector instructions that operate
 on vector values and/or vector masks. (These functions don't translate to real CPU vector instructions, instead we simulate these operations for you in our library, and provide feedback that makes for easier debugging.)  As an example of using the CS149 intrinsics, a vectorized version of the `abs()` function is given in `main.cpp`. This example contains some basic vector loads and stores and manipulates mask registers.  Note that the `abs()` example is only a simple example, and in fact the code does not correctly handle all inputs! (We will let you figure out why!) You may wish to read through all the comments and function definitions in `CS149intrin.h` to know what operations are available to you. 
 
 Here are few hints to help you in your implementation:
@@ -260,7 +248,7 @@ the foreach loop to yield a more straightforward implementation.
 
 **What you need to do:**
 
-1.  Compile and run the program mandelbrot ispc. __The ISPC compiler is currently configured to emit 8-wide AVX2 vector instructions.__  What is the maximum
+1.  Compile and run the program mandelbrot ispc by changing `avx2-i32x8` to `neon-i32x8` and `x86-64` to `aarch64` in the Makefile and then run make. __The ISPC compiler is currently configured to emit 8-wide Neon vector instructions.__  What is the maximum
   speedup you expect given what you know about these CPUs?
   Why might the number you observe be less than this ideal? (Hint:
   Consider the characteristics of the computation you are performing?
@@ -273,8 +261,7 @@ the foreach loop to yield a more straightforward implementation.
   on a single core. This parallelization scheme differs from that of
   Program 1, where speedup was achieved by running threads on multiple
   cores.
-
-If you look into detailed technical material about the CPUs in the myth machines, you will find there are a complicated set of rules about how many scalar and vector instructions can be run per clock.  For the purposes of this assignment, you can assume that there are about as many 8-wide vector execution units as there are scalar execution units for floating point math.   
+  
 
 ### Program 3, Part 2: ISPC Tasks (10 of 20 points) ###
 
@@ -301,7 +288,7 @@ different CPU cores).
   `mandelbrot_ispc --tasks` by changing the number of tasks the code
   creates. By only changing code in the function
   `mandelbrot_ispc_withtasks()`, you should be able to achieve
-  performance that exceeds the sequential version of the code by over 32 times!
+  performance that exceeds the sequential version by a substantial amount!
   How did you determine how many tasks to create? Why does the
   number you chose work best?
 3.  _Extra Credit: (2 points)_ What are differences between the thread
@@ -339,19 +326,18 @@ Note: This problem is a review to double-check your understanding, as it covers 
 
 **What you need to do:**
 
-1.  Build and run `sqrt`. Report the ISPC implementation speedup for 
-  single CPU core (no tasks) and when using all cores (with tasks). What 
+1.  Build and run sqrt, by changing `avx2-i32x8` to `neon-i32x8` and `x86-64` to `aarch64` in the Makefile and then running make. Report the ISPC implementation speedup for single CPU core (no tasks) and when using all cores (with tasks). What 
   is the speedup due to SIMD parallelization? What is the speedup due to 
   multi-core parallelization?
 2.  Modify the contents of the array values to improve the relative speedup 
   of the ISPC implementations. Construct a specifc input that __maximizes speedup over the sequential version of the code__ and report the resulting speedup achieved (for both the with- and without-tasks ISPC implementations). Does your modification improve SIMD speedup?
   Does it improve multi-core speedup (i.e., the benefit of moving from ISPC without-tasks to ISPC with tasks)? Please explain why.
 3.  Construct a specific input for `sqrt` that __minimizes speedup for ISPC (without-tasks) over the sequential version of the code__. Describe this input, describe why you chose it, and report the resulting relative performance of the ISPC implementations. What is the reason for the loss in efficiency? 
-    __(keep in mind we are using the `--target=avx2` option for ISPC, which generates 8-wide SIMD instructions)__. 
+    __(keep in mind we are using the `--target=neon` option for ISPC, which generates 8-wide SIMD instructions)__. 
 4.  _Extra Credit: (up to 2 points)_ Write your own version of the `sqrt` 
  function manually using AVX2 intrinsics. To get credit your 
     implementation should be nearly as fast (or faster) than the binary 
-    produced using ISPC. You may find the [Intel Intrinsics Guide](https://software.intel.com/sites/landingpage/IntrinsicsGuide/) 
+    produced using ISPC. You may find the [Arm Neon Intrinsics Guide]([https://software.intel.com/sites/landingpage/IntrinsicsGuide/](https://arm-software.github.io/acle/neon_intrinsics/advsimd.html)) 
     very helpful.
  
 ## Program 5: BLAS `saxpy` (10 points) ##
@@ -386,7 +372,7 @@ In the starter code you have been given a correct implementation of the K-means 
 
 **What you need to do:**
 
-1. Use the command `ln -s /afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat` to create a symbolic link to the dataset in your current directory (make sure you're in the `prog6_kmeans` directory). This is a large file (~800MB), so this is the preferred way to access it. However, if you'd like a local copy, you can run this command on your personal machine `scp [Your SUNetID]@myth[51-66].stanford.edu:/afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat`. Once you have the data, compile and run `kmeans` (it may take longer than usual for the program to load the data on your first try). The program will report the total runtime of the algorithm on the data.
+1. Download the data by running this command on your personal machine `scp [Your SUNetID]@myth[51-66].stanford.edu:/afs/ir.stanford.edu/class/cs149/data/data.dat ./data.dat`. Once you have the data, compile and run `kmeans` (it may take longer than usual for the program to load the data on your first try). The program will report the total runtime of the algorithm on the data.
 2.  Run `pip install -r requirements.txt` to download the necessary plotting packages. Next, try running `python3 plot.py` which will generate the files "start.png" and "end.png" from the logs ("start.log" and "end.log") generated from running `kmeans`. These files will be in the current directory and should look similar to the above images. __Warning: You might notice that not all points are assigned to the "closest" centroid. This is okay.__ (For those that want to understand why: We project 100-dimensional datapoints down to 2-D using [PCA](https://en.wikipedia.org/wiki/Principal_component_analysis) to produce these visualizations. Therefore, while the 100-D datapoint is near the appropriate centroid in high dimensional space, the projects of the datapoint and the centroid may not be close to each other in 2-D.). As long as the clustering looks "reasonable" (use the images produced by the starter code in step 2 as a reference) and most points appear to be assigned to the clostest centroid, the code remains correct.
 3.  Utilize the timing function in `common/CycleTimer.h` to determine where in the code there are performance bottlenecks. You will need to call `CycleTimer::currentSeconds()`, which returns the current time (in seconds) as a floating point number. Where is most of the time being spent in the code?
 4.  Based on your findings from the previous step, improve the implementation. We are looking for a speedup of about 2.1x or more (i.e $\frac{oldRuntime}{newRuntime} >= 2.1$). Please explain how you arrived at your solution, as well as what your final solution is and the associated speedup. The writeup of this process should describe a sequence of steps. We expect something of the form "I measured ... which let me to believe X. So to improve things I tried ... resulting in a speedup/slowdown of ...".
@@ -402,9 +388,6 @@ Tips / Notes:
 - Try to prioritize code improvements with the potential for high returns and think about the different axes of parallelism available in the problem and how you may take advantage of them.
 - **The objective of this program is to give you more practice with learning how to profile and debug performance oriented programs. Even if you don't hit the performance target, if you demonstrate good/thoughtful debugging skills in the writeup you'll still get most of the points.**
 
-## What About ARM-Based Macs? ##
-
-For those with access to a new Apple ARM-based laptop, check out the handout [here](README_aarch64.md). Produce a report of performance of the various programs on a new Apple ARM-based laptop. The staff is curious about what you will find.  What speedups are you observing from SIMD execution? Those without access to a modern Macbook could try to use ARM-based servers that are available on a cloud provider like AWS, although it has not been tested by the staff. Please do not submit any code from running on ARM based machines to Gradescope.  
 
 ## For the Curious (highly recommended) ##
 
@@ -412,17 +395,7 @@ Want to know about ISPC and how it was created? One of the two creators of ISPC,
 
 ## Hand-in Instructions ##
 
-Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required. However, please make sure that you add your partner's name to the gradescope submission. There are two places you will need to turn in the files on Gradescope: `Assignment 1 (Write-Up)` and `Assignment 1 (Code)`. 
-
-Please place the following in `Assignment 1 (Write-Up)`:
-* Your writeup, in a file called `writeup.pdf`. Please make sure both group members' names and SUNet id's are in the document. (if you are a group of two)
-
-Please place the following in `Assignment 1 (Code)`:
-* Your implementation of `main.cpp` in Program 2, in a file called `prob2.cpp`
-* Your implementation of `kmeansThread.cpp` in Program 6, in a file called `prob6.cpp`
-* Any additional code, for example, because you attempted an extra credit
-
-Please tell the CAs to look for your extra credit in your write-up. When handed in, all code must be compilable and runnable out of the box on the myth machines!
+Handin will be performed via [Gradescope](https://www.gradescope.com). Only one handin per group is required. However, please make sure that you add your partner's name to the gradescope submission. There is one place you will need to turn in the files on Gradescope: `Assignment 1 (Write-Up)`. Do not submit code related to running locally to Gradescope, as we will only run code on Myth machines. Please paste your Mac findings after the Myth write up. 
 
 ## Resources and Notes ##
 
@@ -430,6 +403,6 @@ Please tell the CAs to look for your extra credit in your write-up. When handed 
   <http://ispc.github.io/>
 -  Zooming into different locations of the mandelbrot image can be quite
   fascinating
--  Intel provides a lot of supporting material about AVX2 vector instructions at
-  <http://software.intel.com/en-us/avx/>.  
--  The [Intel Intrinsics Guide](https://software.intel.com/sites/landingpage/IntrinsicsGuide/) is very useful.
+-  Arm provides a lot of supporting material about Neon vector instructions at 
+  <https://developer.arm.com/architectures/instruction-sets/intrinsics/>.  
+
