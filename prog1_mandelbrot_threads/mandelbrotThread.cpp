@@ -36,6 +36,12 @@ void workerThreadStart(WorkerArgs * const args) {
     // half of the image and thread 1 could compute the bottom half.
 
     printf("Hello world from thread %d\n", args->threadId);
+    mandelbrotSerial(args->x0, args->y0, args->x1, args->y1,
+                     args->width, args->height,
+                     args->threadId * args->height, // startRow. xg: this will break if numThreads=7
+                     args->height, // totalRows
+                     args->maxIterations,
+                     args->output);
 }
 
 //
@@ -61,23 +67,30 @@ void mandelbrotThread(
     std::thread workers[MAX_THREADS];
     WorkerArgs args[MAX_THREADS];
 
+    // xg additions 
+    float dy = (y1 - y0) / height;  // xg: equivalent to dy for mandelbrotSerial
+    int block_height = height / numThreads;
+
     for (int i=0; i<numThreads; i++) {
       
         // TODO FOR CS149 STUDENTS: You may or may not wish to modify
         // the per-thread arguments here.  The code below copies the
         // same arguments for each thread
-        args[i].x0 = x0;
-        args[i].y0 = y0;
-        args[i].x1 = x1;
-        args[i].y1 = y1;
-        args[i].width = width;
-        args[i].height = height;
+        // xg: right now, assume we are breaking into bands
+        args[i].x0 = x0;  // xg: stays the same
+        args[i].y0 = y0 + i * block_height * dy;  //xg: shift y0 up
+        args[i].x1 = x1;  // xg: stays the same
+        args[i].y1 = y1 + (i + 1) * block_height * dy;  // xg: shift y1 up
+        args[i].width = width;  // xg: stays the same
+        args[i].height = block_height;  // xg: need to rescale bc we are changing y0 and y1
         args[i].maxIterations = maxIterations;
         args[i].numThreads = numThreads;
-        args[i].output = output;
+        args[i].output = output + i * block_height * width; // xg: offset output pointer to start of thread's block
       
         args[i].threadId = i;
     }
+    args[numThreads - 1].height = (y1 - args[numThreads - 1].y0) / dy; // xg: make sure last thread gets all remaining rows
+    args[numThreads - 1].y1 = y1; // xg: make sure last thread gets all remaining rows
 
     // Spawn the worker threads.  Note that only numThreads-1 std::threads
     // are created and the main application thread is used as a worker
