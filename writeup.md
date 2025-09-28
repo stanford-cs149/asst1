@@ -13,6 +13,10 @@ The speed-up is not linear n the number of threads used because of a thread-imba
 
 The measurements show that because of worker imbalance, we are not getting linear speed ups, but they are instead plateauing.
 
+## 1.4
+
+We chunk the image into smaller pieces, assign each thread to the smaller piece, in this way avoiding worker imbalance.
+
 ## Program 2
 
 ## Program 3
