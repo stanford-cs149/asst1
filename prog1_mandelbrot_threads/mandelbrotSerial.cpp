@@ -85,7 +85,8 @@ void mandelbrotSerial(
             float y = y0 + j * dy;
 
             int index = (j * width + i);
-            output[index] = mandel(x, y, maxIterations);
+            int temp = mandel(x, y, maxIterations);
+            output[index] = temp;
         }
     }
 }
