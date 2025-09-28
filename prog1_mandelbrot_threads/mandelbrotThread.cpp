@@ -30,14 +30,13 @@ extern void mandelbrotSerial(
 // Thread entrypoint.
 void workerThreadStart(WorkerArgs * const args) {
 
-    // Implement the body of the worker
-    // thread here. Each thread should make a call to mandelbrotSerial()
-    // to compute a part of the output image.  For example, in a
-    // program that uses two threads, thread 0 could compute the top
-    // half of the image and thread 1 could compute the bottom half.
+    double start_time = CycleTimer::currentSeconds();
+
 
     // capture the case where we process the very last thread which may be slightly more 
     // due to non perfect division of height by numThreads
+
+
     int startRow;
     if (args->threadId < args->numThreads - 1) {
         startRow = (args->threadId) * (args->delta_height);
@@ -53,6 +52,10 @@ void workerThreadStart(WorkerArgs * const args) {
                      args->delta_height, // delta amount of rows to process
                      args->maxIterations,
                      args->output);
+
+    double end_time = CycleTimer::currentSeconds();
+    printf("Thread %d finished in %f ms\n", args->threadId,
+           (end_time - start_time) * 1000);
 }
 
 //
