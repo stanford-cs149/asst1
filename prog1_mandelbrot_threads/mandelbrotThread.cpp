@@ -29,7 +29,7 @@ extern void mandelbrotSerial(
 // Thread entrypoint.
 void workerThreadStart(WorkerArgs * const args) {
 
-    // TODO FOR CS149 STUDENTS: Implement the body of the worker
+    // Implement the body of the worker
     // thread here. Each thread should make a call to mandelbrotSerial()
     // to compute a part of the output image.  For example, in a
     // program that uses two threads, thread 0 could compute the top
@@ -41,7 +41,7 @@ void workerThreadStart(WorkerArgs * const args) {
     printf("the output pointer is %p\n", args->output);
     mandelbrotSerial(args->x0, args->y0, args->x1, args->y1,
                      args->width, args->height,
-                     startRow, // startRow. xg: this will break if numThreads=7
+                     0, 
                      args->height, // totalRows
                      args->maxIterations,
                      args->output);
@@ -69,35 +69,44 @@ void mandelbrotThread(
     // Creates thread objects that do not yet represent a thread.
     std::thread workers[MAX_THREADS];
     WorkerArgs args[MAX_THREADS];
+    float dy = (y1 - y0) / height; 
 
-    // xg additions 
-    float dy = (y1 - y0) / height;  // xg: equivalent to dy for mandelbrotSerial
-    int block_height = height / numThreads;
+    // we will parallelize into numThreads horizontal blocks
+    // such that the width is always the same (x0, x1 do not change)
+    // but y0 and y1 change for each thread
+
+    // since height may not be evenly divisible by numThreads,
+    // we will give the last thread any remaining rows
+    // but the other heights will be standardized under int division
+    int block_height = height / numThreads; 
 
     for (int i=0; i<numThreads; i++) {
-      
-        // TODO FOR CS149 STUDENTS: You may or may not wish to modify
-        // the per-thread arguments here.  The code below copies the
-        // same arguments for each thread
-        // xg: right now, assume we are breaking into bands
-        args[i].x0 = x0;  // xg: stays the same
-        args[i].y0 = y0 + i * block_height * dy;  //xg: shift y0 up
-        args[i].x1 = x1;  // xg: stays the same
-        args[i].y1 = y1 + (i + 1) * block_height * dy;  // xg: shift y1 up
-        args[i].width = width;  // xg: stays the same
-        args[i].height = block_height;  // xg: need to rescale bc we are changing y0 and y1
+        // width is always the same
+        args[i].x0 = x0;  
+        args[i].x1 = x1; 
+        args[i].width = width;
+
+        // height changes for each thread
+        if (i < (numThreads - 1)){
+            args[i].y0 = y0 + i * block_height * dy; 
+            args[i].y1 = y0 + (i+1) * block_height * dy;
+            args[i].height = block_height; 
+        } else {
+            args[i].y0 = y0 + i * block_height * dy; 
+            args[i].y1 = y1; // make sure last thread gets all remaining rows
+            args[i].height = height - i * block_height;
+        }
+
+        // shared parameters
         args[i].maxIterations = maxIterations;
         args[i].numThreads = numThreads;
-        args[i].output = output + i * block_height * width; // xg: offset output pointer to start of thread's block
-      
+        args[i].output = output + i*block_height*width;;
         args[i].threadId = i;
     }
-    args[numThreads - 1].height = (y1 - args[numThreads - 1].y0) / dy; // xg: make sure last thread gets all remaining rows
-    args[numThreads - 1].y1 = y1; // xg: make sure last thread gets all remaining rows
-
     // Spawn the worker threads.  Note that only numThreads-1 std::threads
     // are created and the main application thread is used as a worker
     // as well.
+    printf("Number of threads: %d\n", numThreads);
     for (int i=1; i<numThreads; i++) {
         workers[i] = std::thread(workerThreadStart, &args[i]);
     }
