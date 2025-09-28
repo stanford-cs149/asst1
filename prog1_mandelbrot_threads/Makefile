@@ -1,32 +1,37 @@
+CXX       = g++ -m64
+DEBUG    ?= 0
 
-CXX=g++ -m64
-CXXFLAGS=-I../common -Iobjs/ -O3 -std=c++11 -Wall -fPIC
+BASE_CXXFLAGS = -I../common -Iobjs/ -std=c++11 -Wall -fPIC
+RELEASE_FLAGS = -O3
+DEBUG_FLAGS   = -Og -g -fno-omit-frame-pointer
 
-APP_NAME=mandelbrot
-OBJDIR=objs
-COMMONDIR=../common
+CXXFLAGS = $(BASE_CXXFLAGS) $(if $(filter 1,$(DEBUG)),$(DEBUG_FLAGS),$(RELEASE_FLAGS))
+LDFLAGS  = $(if $(filter 1,$(DEBUG)),-g,)
 
-PPM_CXX=$(COMMONDIR)/ppm.cpp
-PPM_OBJ=$(addprefix $(OBJDIR)/, $(subst $(COMMONDIR)/,, $(PPM_CXX:.cpp=.o)))
+APP_NAME = mandelbrot
+OBJDIR   = objs
+COMMONDIR= ../common
 
+PPM_CXX  = $(COMMONDIR)/ppm.cpp
+PPM_OBJ  = $(addprefix $(OBJDIR)/,$(subst $(COMMONDIR)/,,$(PPM_CXX:.cpp=.o)))
 
 default: $(APP_NAME)
 
 .PHONY: dirs clean
 
 dirs:
-		/bin/mkdir -p $(OBJDIR)/
+	/bin/mkdir -p $(OBJDIR)/
 
 clean:
-		/bin/rm -rf $(OBJDIR) *.ppm *~ $(APP_NAME)
+	/bin/rm -rf $(OBJDIR) *.ppm *~ $(APP_NAME)
 
-OBJS=$(OBJDIR)/main.o $(OBJDIR)/mandelbrotSerial.o $(OBJDIR)/mandelbrotThread.o $(PPM_OBJ)
+OBJS = $(OBJDIR)/main.o $(OBJDIR)/mandelbrotSerial.o $(OBJDIR)/mandelbrotThread.o $(PPM_OBJ)
 
 $(APP_NAME): dirs $(OBJS)
-		$(CXX) $(CXXFLAGS) -o $@ $(OBJS) -lm -lpthread
+	$(CXX) -o $@ $(OBJS) $(LDFLAGS) -lm -lpthread
 
 $(OBJDIR)/%.o: %.cpp
-		$(CXX) $< $(CXXFLAGS) -c -o $@
+	$(CXX) $< $(CXXFLAGS) -c -o $@
 
 $(OBJDIR)/%.o: $(COMMONDIR)/%.cpp
 	$(CXX) $< $(CXXFLAGS) -c -o $@

@@ -34,11 +34,14 @@ void workerThreadStart(WorkerArgs * const args) {
     // to compute a part of the output image.  For example, in a
     // program that uses two threads, thread 0 could compute the top
     // half of the image and thread 1 could compute the bottom half.
-
+    int startRow = (args->threadId) * (args->height); // xg: this will break if numThreads=7
     printf("Hello world from thread %d\n", args->threadId);
+    printf("the start row is %d\n", startRow);
+    printf("the height is %d\n", args->height);
+    printf("the output pointer is %p\n", args->output);
     mandelbrotSerial(args->x0, args->y0, args->x1, args->y1,
                      args->width, args->height,
-                     args->threadId * args->height, // startRow. xg: this will break if numThreads=7
+                     startRow, // startRow. xg: this will break if numThreads=7
                      args->height, // totalRows
                      args->maxIterations,
                      args->output);
