@@ -15,7 +15,11 @@ The measurements show that because of worker imbalance, we are not getting linea
 
 ## 1.4
 
-We chunk the image into smaller pieces, assign each thread to the smaller piece, in this way avoiding worker imbalance.
+We chunk the image into smaller pieces, assign each thread to the smaller piece, in this way avoiding worker imbalance. 7.19 thread-up with 8 threads.
+
+## 1.5
+
+Only 7.08 speed up with 16 threads. This is because the specs only support 8 hardware threads, so the OS is context switching between threads.
 
 ## Program 2
 
