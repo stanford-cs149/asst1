@@ -35,22 +35,12 @@ void workerThreadStart(WorkerArgs * const args) {
     // to compute a part of the output image.  For example, in a
     // program that uses two threads, thread 0 could compute the top
     // half of the image and thread 1 could compute the bottom half.
-
-    // capture the case where we process the very last thread which may be slightly more 
-    // due to non perfect division of height by numThreads
-    int startRow;
-    if (args->threadId < args->numThreads - 1) {
-        startRow = (args->threadId) * (args->delta_height);
-    }
-    else {
-        startRow = args->height - args->delta_height;
-    }
-
+    int startRow = (args->threadId) * (args->delta_height); 
     mandelbrotSerial(args->x0, args->y0, args->x1, args->y1,
                      args->width, 
                      args->height,
-                     startRow,  // startRow
-                     args->delta_height, // delta amount of rows to process
+                     0,  // startRow
+                     args->delta_height, // totalRows
                      args->maxIterations,
                      args->output);
 }
@@ -77,6 +67,7 @@ void mandelbrotThread(
     // Creates thread objects that do not yet represent a thread.
     std::thread workers[MAX_THREADS];
     WorkerArgs args[MAX_THREADS];
+    float dy = (y1 - y0) / height; 
 
     // we will parallelize into numThreads horizontal blocks
     // such that the width is always the same (x0, x1 do not change)
@@ -88,23 +79,27 @@ void mandelbrotThread(
     int block_height = height / numThreads; 
 
     for (int i=0; i<numThreads; i++) {
+        // width is always the same
+        args[i].x0 = x0;  
+        args[i].x1 = x1; 
+        args[i].width = width;
+
         // height changes for each thread
         if (i < (numThreads - 1)){
+            args[i].y0 = y0 + i * block_height * dy; 
+            args[i].y1 = y0 + (i+1) * block_height * dy;
             args[i].delta_height = block_height; 
         } else {
+            args[i].y0 = y0 + i * block_height * dy; 
+            args[i].y1 = y1; // make sure last thread gets all remaining rows
             args[i].delta_height = height - i * block_height;
         }
 
         // shared parameters
-        args[i].x0 = x0;  
-        args[i].x1 = x1; 
-        args[i].y0 = y0;
-        args[i].y1 = y1;
-        args[i].width = width;
-        args[i].height = height; 
+        args[i].height = height; // height of the full image
         args[i].maxIterations = maxIterations;
         args[i].numThreads = numThreads;
-        args[i].output = output;
+        args[i].output = output + i*block_height*width;;
         args[i].threadId = i;
     }
     // Spawn the worker threads.  Note that only numThreads-1 std::threads
