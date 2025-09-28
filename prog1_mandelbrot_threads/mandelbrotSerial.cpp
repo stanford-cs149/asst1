@@ -37,7 +37,6 @@
    SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 static inline int mandel(float c_re, float c_im, int count)
 {
     float z_re = c_re, z_im = c_im;
@@ -79,12 +78,12 @@ void mandelbrotSerial(
 
     int endRow = startRow + totalRows;
 
-    for (int j = startRow; j < endRow; j++) {
-        for (int i = 0; i < width; ++i) {
+    for (int j = startRow; j < endRow; j++) { // Row  j
+        for (int i = 0; i < width; ++i) { // Columns i
             float x = x0 + i * dx;
             float y = y0 + j * dy;
 
-            int index = (j * width + i);
+            int index = (j * width + i);   // row storage
             output[index] = mandel(x, y, maxIterations);
         }
     }
