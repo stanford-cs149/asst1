@@ -8,7 +8,9 @@ typedef struct {
     float y0, y1;
     unsigned int width;
     unsigned int height;
+    /* from Approach 1 where we compute numThreads horizontal chunks
     unsigned int delta_height;
+    */
     int maxIterations;
     int* output;
     int threadId;
@@ -23,6 +25,13 @@ extern void mandelbrotSerial(
     int maxIterations,
     int output[]);
 
+extern void mandelbrotSlices(
+    float x0, float y0, float x1, float y1,
+    int width, int height,
+    int startRow, int slice,
+    int maxIterations,
+    int output[]);
+
 
 //
 // workerThreadStart --
@@ -32,11 +41,11 @@ void workerThreadStart(WorkerArgs * const args) {
 
     double start_time = CycleTimer::currentSeconds();
 
+    /* Approach 1: Splitting up the image into numThread horizontal chunks, 
+    computed by mandelbrotSerial.
 
     // capture the case where we process the very last thread which may be slightly more 
     // due to non perfect division of height by numThreads
-
-
     int startRow;
     if (args->threadId < args->numThreads - 1) {
         startRow = (args->threadId) * (args->delta_height);
@@ -50,6 +59,21 @@ void workerThreadStart(WorkerArgs * const args) {
                      args->height,
                      startRow,  // startRow
                      args->delta_height, // delta amount of rows to process
+                     args->maxIterations,
+                     args->output);
+    */
+    /* Approach 2: We split up the image to be more balanced. Each thread computes every 
+    numThreads-th row.
+
+    ie for a given row r, if (r % numThreads == threadId), then this thread computes row 
+    r.    
+    */
+    int slice = args->numThreads;
+    mandelbrotSlices(args->x0, args->y0, args->x1, args->y1,
+                     args->width, 
+                     args->height,
+                     args->threadId,  // startRow
+                     slice, // slice
                      args->maxIterations,
                      args->output);
 
@@ -81,6 +105,7 @@ void mandelbrotThread(
     std::thread workers[MAX_THREADS];
     WorkerArgs args[MAX_THREADS];
 
+    /* from Approach 1 where we compute numThreads horizontal chunks
     // we will parallelize into numThreads horizontal blocks
     // such that the width is always the same (x0, x1 do not change)
     // but y0 and y1 change for each thread
@@ -89,14 +114,17 @@ void mandelbrotThread(
     // we will give the last thread any remaining rows
     // but the other heights will be standardized under int division
     int block_height = height / numThreads; 
+    */
 
     for (int i=0; i<numThreads; i++) {
+        /* from Approach 1 where we compute numThreads horizontal chunks
         // height changes for each thread
         if (i < (numThreads - 1)){
             args[i].delta_height = block_height; 
         } else {
             args[i].delta_height = height - i * block_height;
         }
+        */
 
         // shared parameters
         args[i].x0 = x0;  
