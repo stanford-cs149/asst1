@@ -408,7 +408,7 @@ For those with access to a new Apple ARM-based laptop, check out the handout [he
 
 ## For the Curious (highly recommended) ##
 
-Want to know about ISPC and how it was created? One of the two creators of ISPC, Matt Pharr, wrote an __amazing blog post__ on the history of its development called [The story of ispc](https://pharr.org/matt/blog/2018/04/30/ispc-all).  It really touches on many issues of parallel system design -- in particular the value of limited scope vs general programming languages.  IMHO it's a must read for CS149 students!
+Want to know about ISPC and how it was created? One of the two creators of ISPC, Matt Pharr, wrote an __amazing blog post__ on the history of its development called [The story of ispc](https://pharr.org/matt/blog/2018/04/30/ispc-all).  It really touches on many issues of parallel system design -- in particular the value of limiting the scope of programming languages vs general purpose programming languages.  And it gets at real-world answers to common questions like... "why can't the compiler just automatically parallelize my program for me?" IMHO it's a must read for CS149 students!
 
 ## Hand-in Instructions ##
 
