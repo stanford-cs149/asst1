@@ -28,14 +28,22 @@ extern void mandelbrotSerial(
 //
 // Thread entrypoint.
 void workerThreadStart(WorkerArgs * const args) {
+    // all threads except the last one get the same number of rows; the last
+    // thread gets the un-divisible rows as well
+    double startTime = CycleTimer::currentSeconds();
 
-    // TODO FOR CS149 STUDENTS: Implement the body of the worker
-    // thread here. Each thread should make a call to mandelbrotSerial()
-    // to compute a part of the output image.  For example, in a
-    // program that uses two threads, thread 0 could compute the top
-    // half of the image and thread 1 could compute the bottom half.
-
-    printf("Hello world from thread %d\n", args->threadId);
+    for (int row = args->threadId; row < (int) args->height; row += args->numThreads) {
+        mandelbrotSerial(
+            args->x0, args->y0, args->x1, args->y1,
+            args->width, args->height,
+            row, 1,
+            args->maxIterations,
+            args->output
+        );
+    }
+    
+    double endTime = CycleTimer::currentSeconds();
+    printf("Thread #%d:\t\t[%.3f] ms\n", args->threadId, (endTime - startTime) * 1000);
 }
 
 //
@@ -93,4 +101,3 @@ void mandelbrotThread(
         workers[i].join();
     }
 }
-
