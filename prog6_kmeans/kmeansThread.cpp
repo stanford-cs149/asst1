@@ -85,7 +85,7 @@ void computeAssignments(WorkerArgs *const args) {
     }
   }
 
-  free(minDist);
+  delete[] minDist;
 }
 
 /**
@@ -122,7 +122,7 @@ void computeCentroids(WorkerArgs *const args) {
     }
   }
 
-  free(counts);
+  delete[] counts;
 }
 
 /**
@@ -148,7 +148,7 @@ void computeCost(WorkerArgs *const args) {
     args->currCost[k] = accum[k];
   }
 
-  free(accum);
+  delete[] accum;
 }
 
 /**
@@ -214,6 +214,6 @@ void kMeansThread(double *data, double *clusterCentroids, int *clusterAssignment
     iter++;
   }
 
-  free(currCost);
-  free(prevCost);
+  delete[] currCost;
+  delete[] prevCost;
 }

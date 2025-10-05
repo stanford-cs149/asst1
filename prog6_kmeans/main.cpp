@@ -61,7 +61,7 @@ void initData(double *data, int M, int N) {
     }
   }
 
-  free(centers);
+  delete[] centers;
 }
 
 void initCentroids(double *clusterCentroids, int K, int N) {
@@ -143,8 +143,8 @@ int main() {
   logToFile("./end.log", SAMPLE_RATE, data, clusterAssignments,
             clusterCentroids, M, N, K);
 
-  free(data);
-  free(clusterCentroids);
-  free(clusterAssignments);
+  delete[] data;
+  delete[] clusterCentroids;
+  delete[] clusterAssignments;
   return 0;
 }
