@@ -6,6 +6,8 @@
 
 extern void saxpySerial(int N, float a, float* X, float* Y, float* result);
 
+extern void saxpyThread(int N, float scale, float* X, float* Y, float* result);
+
 
 // return GB/s
 static float
@@ -40,6 +42,7 @@ int main() {
     float* arrayX = new float[N];
     float* arrayY = new float[N];
     float* resultSerial = new float[N];
+    float * resultThread = new float[N];
     float* resultISPC = new float[N];
     float* resultTasks = new float[N];
 
@@ -49,6 +52,7 @@ int main() {
         arrayX[i] = i;
         arrayY[i] = i;
         resultSerial[i] = 0.f;
+        resultThread[i] = 0.f;
         resultISPC[i] = 0.f;
         resultTasks[i] = 0.f;
     }
@@ -65,10 +69,28 @@ int main() {
         minSerial = std::min(minSerial, endTime - startTime);
     }
 
-// printf("[saxpy serial]:\t\t[%.3f] ms\t[%.3f] GB/s\t[%.3f] GFLOPS\n",
-    //       minSerial * 1000,
-    //       toBW(TOTAL_BYTES, minSerial),
-    //       toGFLOPS(TOTAL_FLOPS, minSerial));
+    printf("[saxpy serial]:\t\t[%.3f] ms\t[%.3f] GB/s\t[%.3f] GFLOPS\n",
+          minSerial * 1000,
+          toBW(TOTAL_BYTES, minSerial),
+          toGFLOPS(TOTAL_FLOPS, minSerial));
+
+    //
+    // Run the thread implementation
+    //
+    double minThread = 1e30;
+    for (int i = 0; i < 3; ++i) {
+        double startTime = CycleTimer::currentSeconds();
+        saxpyThread(N, scale, arrayX, arrayY, resultThread);
+        double endTime = CycleTimer::currentSeconds();
+        minThread = std::min(minThread, endTime - startTime);
+    }
+
+    verifyResult(N, resultThread, resultSerial);
+
+    printf("[saxpy thread]:\t\t[%.3f] ms\t[%.3f] GB/s\t[%.3f] GFLOPS\n",
+           minThread * 1000,
+           toBW(TOTAL_BYTES, minThread),
+           toGFLOPS(TOTAL_FLOPS, minThread));
 
     //
     // Run the ISPC (single core) implementation
@@ -106,13 +128,15 @@ int main() {
            toBW(TOTAL_BYTES, minTaskISPC),
            toGFLOPS(TOTAL_FLOPS, minTaskISPC));
 
+    printf("\t\t\t\t(%.2fx speedup from threads)\n", minSerial/minThread);
+    printf("\t\t\t\t(%.2fx speedup from ISPC)\n", minSerial/minISPC);
+    printf("\t\t\t\t(%.2fx speedup from task ISPC)\n", minSerial/minTaskISPC);
     printf("\t\t\t\t(%.2fx speedup from use of tasks)\n", minISPC/minTaskISPC);
-    //printf("\t\t\t\t(%.2fx speedup from ISPC)\n", minSerial/minISPC);
-    //printf("\t\t\t\t(%.2fx speedup from task ISPC)\n", minSerial/minTaskISPC);
 
     delete[] arrayX;
     delete[] arrayY;
     delete[] resultSerial;
+    delete[] resultThread;
     delete[] resultISPC;
     delete[] resultTasks;
 
