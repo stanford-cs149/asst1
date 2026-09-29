@@ -24,7 +24,14 @@ extern void mandelbrotSerial(
     int maxIterations,
     int output[]);
 
-
+extern void mandelbrotSerial(
+    float x0, float y0, float x1, float y1,
+    int width, int height,
+    int startRow, int totalRows,
+    int maxIterations,
+    int output[],
+    int threadId,
+    int numThreads);
 //
 // workerThreadStart --
 //
@@ -50,7 +57,9 @@ void workerThreadStart(WorkerArgs * const args) {
         startRow,
         (args->threadId == args->numThreads - 1) ? (args->height - startRow) : numRows, 
         args->maxIterations,
-        args->output
+        args->output,
+        args->threadId,
+        args->numThreads
     );
 
     auto end = std::chrono::steady_clock::now();
